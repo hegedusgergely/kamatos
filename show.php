@@ -11,7 +11,7 @@
 <body>
 
     <header>
-        <a class="two columns" href="/">Vissza</a>
+        <a class="two columns" href="/kamatos">Vissza</a>
         <div class="container">
             <div class="row">
                 <h3 class="four columns offset-by-four">Kamat számláló</h3>
