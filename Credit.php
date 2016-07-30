@@ -123,18 +123,29 @@ class Credit
         // Egy összesítő arról, hogy milyen adatokkal is számolunk.
         echo "
         <div class='row'>
-        <p class='ten columns offset-by-one'>
-        Tehát a felvett hitel összege
-        <strong>".number_format($this->getLoan(),0,',',' ')."</strong> Ft, <strong>".$this->getDurationInMonth()."</strong> hónapra <strong>"
-        .$this->getInterestRate()."</strong> %-os kamattal (ami havi ".round($this->getInterestRateForAMonth(),3)." %-ot jelent).
-        <br>
-        </p>
+            <p class='ten columns offset-by-one'>
+                A felvett hitel összege
+                <strong>".number_format($this->getLoan(),0,',',' ')."</strong> Ft, <strong>".$this->getDurationInMonth()."</strong> hónapra <strong>"
+                .$this->getInterestRate()."</strong>%-os kamattal – havi ".round($this->getInterestRateForAMonth(),3)."%.
+                <br>
+            </p>
         </div>";
+
+        // Értékek a véglegesen visszafizetendő összegekről.
+        $all = ($this->getLoan() + $this->getSumInterestRate()[$this->getDurationInMonth()-1]);
+        $monthly = $all / $this->getDurationInMonth();
+        echo "
+        <div class='row'>
+            <p class='eight columns offset-by-two'>
+                Összesen visszavizetendő: <strong>".number_format($all,0,',',' ')
+                .'</strong> Ft ami havonta: <strong>'.number_format($monthly,0,',',' ').'</strong> Ft.
+            </p>
+        </div>';
 
         //Táblázat
         echo '
             <div class="row">
-            <table class="eight columns offset-by-two">
+            <table class="ten columns offset-by-one">
                 <tr>
                     <th>Hónap</th>
                     <th>Tőkemaradvány</th>
@@ -154,15 +165,7 @@ class Credit
 
         echo "</table>
         </div>";
-        $all = ($this->getLoan() + $this->getSumInterestRate()[$this->getDurationInMonth()-1]);
-        $monthly = $all / $this->getDurationInMonth();
-        echo "
-        <div class='row'>
-        <p class='eight columns offset-by-two'>
-        Összesen visszavizetendő: <strong>".number_format($all,0,',',' ')
-        .'</strong> Ft ami havonta: <strong>'.number_format($monthly,0,',',' ').'</strong> Ft.
-        </p>
-        </div>';
+
     }
 }
 ?>

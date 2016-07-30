@@ -1,22 +1,93 @@
+/*
+ * Variables
+ */
+
+$background-color: lighten(#33C3F0, 20%);
+$header-text-color: #fff;
+
+
 *
 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
+
 strong
 {
     font-weight: bold;
 }
-header
-{
-    padding: 50px;
-    h1,h2,h3,h4,h5,h6
-    {
-        text-align: center;
 
-    }
-}
 body
 {
     font-size: 1.7em;
+    background-color: $background-color;
+
+    #form
+    {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 4px;
+    }
+
+    label
+    {
+        color: #505050;
+    }
+
+    input
+    {
+        font-size: 1.5rem;
+    }
+
+    input[type="submit"]
+    {
+        font-size: 1.5rem;
+        font-family: 'Rakkas', cursive;
+        letter-spacing: .2rem;
+    }
+
+    table
+    {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 4px;
+
+        th,td
+        {
+            text-align: center;
+            color: #505050;
+        }
+    }
+
+    p
+    {
+        text-align: center;
+        color: #505050;
+    }
+
+    header
+    {
+        padding: 100px 0 50px 0;
+        color: $header-text-color;
+        text-align: center;
+
+        h1,h3
+        {
+            font-family: 'Rakkas', cursive;
+            letter-spacing: 1rem;
+            text-transform: uppercase;
+        }
+        h1
+        {
+            font-size: 7rem;
+        }
+        h3
+        {
+            font-size: 3rem;
+        }
+        p
+        {
+            font-size: 2rem;
+        }
+    }
 }
