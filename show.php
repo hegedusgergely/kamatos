@@ -2,8 +2,8 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/skeleton.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js" charset="utf-8"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Rakkas&subset=latin-ext" rel="stylesheet">
     <title>Kamat Számláló</title>
