@@ -15,13 +15,13 @@ class Credit
 
     protected $interest;
 
-    protected $interestRateForAMonth;
+    protected $interestForAMonth;
 
     protected $reedemForAMonth;
 
     protected $loanCounter;
 
-    protected $interestRateCounter;
+    protected $interestCounter;
 
     protected $sumInterestRate;
 
@@ -31,16 +31,18 @@ class Credit
     public function __construct($loan, $duration, $interest)
     {
         $this -> loan = $loan;
+
         $this -> duration = $duration;
+
         $this -> interest = $interest;
 
-        $this -> setInterestRateForAMonth(1);
+        $this -> setInterestForAMonth(1);
 
         $this -> setReedemForAMonth(1);
 
         $this -> setLoanCounter(1);
 
-        $this -> setInterestRateCounter(1);
+        $this -> setInterestCounter(1);
 
         $this -> setSumInterestRate(1);
 
@@ -80,14 +82,14 @@ class Credit
         return $this -> interest;
     }
 
-    public function setInterestRateForAMonth($interestRateForAMonth)
+    public function setInterestForAMonth($interestForAMonth)
     {
-        $this -> interestRateForAMonth = $this -> getInterest() / 12;
+        $this -> interestForAMonth = $this -> getInterest() / 12;
     }
 
-    public function getInterestRateForAMonth()
+    public function getInterestForAMonth()
     {
-        return $this -> interestRateForAMonth;
+        return $this -> interestForAMonth;
     }
 
     public function setReedemForAMonth($reedemForAMonth)
@@ -117,32 +119,32 @@ class Credit
         return $this -> loanCounter;
     }
 
-    public function setInterestRateCounter($interestRateCounter)
+    public function setInterestCounter($interestCounter)
     {
         foreach ($this -> getLoanCounter() as $i => $value)
         {
-            $this -> interestRateCounter[$i] = ($value * $this -> getInterestRateForAMonth()) / 100;
+            $this -> interestCounter[$i] = ($value * $this -> getInterestForAMonth()) / 100;
         }
     }
 
-    public function getInterestRateCounter()
+    public function getInterestCounter()
     {
-        return $this -> interestRateCounter;
+        return $this -> interestCounter;
     }
 
-    public function setSuminterestrate($sumInterestRate)
+    public function setSuminterestrate($sumInterest)
     {
-        $this -> sumInterestRate[0] = $this -> getInterestRateCounter()[0];
+        $this -> sumInterest[0] = $this -> getInterestCounter()[0];
 
         for ($i = 1; $i < count($this -> getLoanCounter()) ; $i ++)
         {
-            $this -> sumInterestRate[$i] = $this -> sumInterestRate[$i-1] + $this -> getInterestRateCounter()[$i];
+            $this -> sumInterest[$i] = $this -> sumInterest[$i-1] + $this -> getInterestCounter()[$i];
         }
     }
 
-    public function getSumInterestRate()
+    public function getSumInterest()
     {
-        return $this -> sumInterestRate;
+        return $this -> sumInterest;
     }
 
     public function __toString()
@@ -159,7 +161,7 @@ class Credit
         </div>";
 
         // Értékek a véglegesen visszafizetendő összegekről.
-        $all = ($this -> getLoan() + $this -> getSumInterestRate()[$this -> getDuration()-1]);
+        $all = ($this -> getLoan() + $this -> getSumInterest()[$this -> getDuration()-1]);
         $monthly = $all / $this -> getDuration();
         echo "
         <div class='row'>
@@ -184,8 +186,8 @@ class Credit
         {
             echo "<tr>"."<td>".($i+1)."</td>"
             ."<td>".number_format($this -> getLoanCounter()[$i],0,',',' ')."</td>"
-            ."<td>".number_format($this -> getInterestRateCounter()[$i],0,',',' ')."</td>"
-            ."<td>".number_format($this -> getSumInterestRate()[$i],0,',',' ')."</td></tr>";
+            ."<td>".number_format($this -> getInterestCounter()[$i],0,',',' ')."</td>"
+            ."<td>".number_format($this -> getSumInterest()[$i],0,',',' ')."</td></tr>";
         }
 
         echo "</table>

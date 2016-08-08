@@ -20,9 +20,15 @@
     </header>
 
         <?php
-            include_once "Credit.php";
+            include "Credit.php";
 
-            $credit = new Credit($_POST["loan"], $_POST["duration"], $_POST["interest"]);
+            $loan = $_POST["loan"];
+
+            $duration = $_POST["duration"];
+
+            $interest = $_POST["interest"];
+
+            $credit = new Credit($loan, $duration, $interest);
         ?>
 
 </body>
