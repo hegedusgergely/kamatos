@@ -11,7 +11,7 @@ strong {
 body {
   font-size: 1.7em;
   background-color: #92dff7; }
-  body #form {
+  body form {
     padding: 20px;
     background-color: #fff;
     border-radius: 4px; }
