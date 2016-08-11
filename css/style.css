@@ -1,4 +1,9 @@
 /*
+ *  Importing Normalize and Skeleton CSS framework.
+ */
+@import url(normalize.css);
+@import url(skeleton.css);
+/*
  * Variables
  */
 * {
