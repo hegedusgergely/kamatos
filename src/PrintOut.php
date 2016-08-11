@@ -1,10 +1,11 @@
 <?php
 
-namespace Kamatos;
-
 /**
  * This Class is responsible for printing out the resoults.
  */
+
+namespace Kamatos;
+
 class PrintOut
 {
     protected $count;
@@ -13,8 +14,8 @@ class PrintOut
     {
         $this -> count = $count;
 
-        var_dump($count);
-        // $this -> __toString();
+        // var_dump($count);
+        $this -> __toString();
     }
 
     public function __toString()
@@ -22,16 +23,18 @@ class PrintOut
         /**
          * Summary of the values we are working with. Just to be sure.
          */
-        // echo "
-        // <div class='row'>
-        //     <p class='ten columns offset-by-one'>
-        //         A felvett hitel összege
-        //         <strong>".number_format(Count -> getLoan(),0,',',' ')."</strong> Ft,
-        //         <strong>".$this -> getDuration()."</strong> hónapra <strong>"
-        //         .$this -> getInterest()."</strong>%-os kamattal.
-        //         <br>
-        //     </p>
-        // </div>";
+        echo "
+        <div class='container'>
+            <div class='row'>
+                <p class='ten columns offset-by-one'>
+                    A felvett hitel összege
+                    <strong>".number_format($count -> getLoan(),0,',',' ')."</strong> Ft,
+                    <strong>".$this -> getDuration()."</strong> hónapra <strong>"
+                    .$this -> getInterest()."</strong>%-os kamattal.
+                    <br>
+                </p>
+            </div>
+        </div>";
 
         /**
          * These are the end results. If the user wants to see detailed info, scroll down.

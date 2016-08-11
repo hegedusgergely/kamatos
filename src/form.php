@@ -23,7 +23,7 @@
             <form class="four columns offset-by-four" action="src/show.php" method="post" onsubmit="return validateForm()">
 
                 <label for="loan">Tőke</label>
-                <input class="u-full-width" type="number" id="loan" name="loan" value="" placeholder="1 000 000 Ft">
+                <input class="u-full-width" type="number" id="loan" name="loan" value="" placeholder="1 000 000 Ft" autofocus>
 
                 <label for="interest">Kamat</label>
                 <input class="u-full-width" type="number" id="interest" name="interest" value="" step="any" placeholder="10 %">
