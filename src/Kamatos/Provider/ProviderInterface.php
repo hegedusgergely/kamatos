@@ -10,5 +10,11 @@ use Interop\Container\ContainerInterface;
  */
 interface ProviderInterface
 {
-    public function register(ContainerInterface $container = null);
+    /**
+     * Returns the provided service object.
+     * 
+     * @param ContainerInterface|null $container The container object.
+     * @return object The service object.
+     */
+    public function provide(ContainerInterface $container = null);
 }
