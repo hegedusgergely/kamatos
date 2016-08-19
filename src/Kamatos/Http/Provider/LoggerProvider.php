@@ -22,9 +22,9 @@ class LoggerProvider implements ProviderInterface
     private $name;
     
     /**
-     * Path to the logger handler.
+     * Path to the logger handler or the resource.
      * 
-     * @var string
+     * @var string|resource
      */
     private $handler;
     
