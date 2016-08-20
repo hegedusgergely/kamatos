@@ -33,16 +33,9 @@ class LoggerProvider implements ProviderInterface
      * 
      * @param string $name The name of the logger.
      * @param string|resource $handler Path to the logger handler or a resource.
-     * @throws Exception
      */
     public function __construct($name, $handler)
     {
-        if (!$this->isValidName($name)) {
-            throw new Exception('The logger name must be a valid string!');
-        }
-        if (!$this->isValidHandler($handler)) {            
-            throw new Exception('The log handler path must be a valid string or resource!');
-        }
         $this->name = $name;
         $this->handler = $handler;
     }
@@ -52,9 +45,16 @@ class LoggerProvider implements ProviderInterface
      * 
      * @param ContainerInterface|null $container
      * @return Logger
+     * @throws Exception
      */
     public function provide(ContainerInterface $container = null)
     {
+        if (!$this->isValidName($this->name)) {
+            throw new Exception('The logger name must be a string!');
+        }
+        if (!$this->isValidHandler($this->handler)) {            
+            throw new Exception('The log handler path must be a string or resource!');
+        }
         $logger = new Logger($this->name);
         $logger->pushHandler(new StreamHandler($this->handler));
         return $logger;
@@ -66,7 +66,7 @@ class LoggerProvider implements ProviderInterface
      * @param string $name Name of the logger.
      * @return boolean
      */
-    private function isValidName($name)
+    public function isValidName($name)
     {
         return is_string($name) && preg_match('/^[a-zA-Z_-]{3,32}$/', $name);
     }
@@ -77,8 +77,8 @@ class LoggerProvider implements ProviderInterface
      * @param string|resource $handler The logger handler.
      * @return boolean
      */
-    private function isValidHandler($handler)
+    public function isValidHandler($handler)
     {
-        return is_resource($handler) || (!empty($handler) && is_string($handler));
+        return is_resource($handler) || (is_string($handler) && !empty($handler));
     }
 }
