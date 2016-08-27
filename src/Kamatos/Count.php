@@ -1,12 +1,12 @@
 <?php
 
-namespace Kamatos;
-
 /**
  * This Class calculates the interests.
  *
  * Should do another one to echo the result.
  */
+
+namespace Kamatos;
 
 class Count
 {
