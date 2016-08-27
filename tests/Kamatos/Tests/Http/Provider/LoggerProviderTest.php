@@ -3,9 +3,9 @@ namespace Kamatos\Tests\Http\Provider;
 
 use Exception;
 use Kamatos\Http\Provider\LoggerProvider;
-use Mockery;
-use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
@@ -17,136 +17,157 @@ use stdClass;
 class LoggerProviderTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @param mixed $handler The provieded handler.
-     * @param boolean $expected The provided expected result.
-     * @dataProvider dataProviderIsValidHandler
+     * @var vfsStreamDirectory
      */
-    public function testIsValidHandlerAcceptsOnlyValidValues($handler, $expected)
+    private $root;
+    
+    public function setUp()
     {
-        $provider = Mockery::mock(LoggerProvider::class)->makePartial();
+        parent::setUp();
+        $structure = [
+            'readable_and_writable' => [
+                'app.log' => ''
+            ]
+        ];
+        $this->root = vfsStream::create($structure, vfsStream::setup('logs'));
+        $this->root->getChild('readable_and_writable')->chmod(0600);
+    }
+    
+    /**
+     * @param string $name The provied name.
+     * @param mixed $handler The provided handler.
+     * @dataProvider dataProviderValidNameAndHandler
+     */
+    public function testReturnsLoggerInstanceWhenNameAndHandlerIsValid($name, $handler)
+    {
+        $provider = new LoggerProvider($name, $handler);
         
-        $this->assertEquals($expected, $provider->isValidHandler($handler));
+        $logger = $provider->provide();
+        
+        $this->assertInstanceOf(Logger::class, $logger);
+    }
+    
+    /**
+     * @param string $name The provided name.
+     * @param mixed $handler The provided handler.
+     * @dataProvider dataProviderValidNameAndHandler
+     */
+    public function testLoggerNameSetProperly($name, $handler)
+    {
+        $provider = new LoggerProvider($name, $handler);
+        
+        $logger = $provider->provide();
+        
+        $this->assertEquals($name, $logger->getName());
+    }
+    
+    /**
+     * @param string $name The provided name.
+     * @param mixed $handler The provided handler.
+     * @dataProvider dataProviderValidNameAndHandler
+     */
+    public function testLoggerHasOnlyOneHandler($name, $handler)
+    {
+        $provider = new LoggerProvider($name, $handler);
+        
+        $logger = $provider->provide();
+        
+        $this->assertCount(1, $logger->getHandlers());
+    }
+    
+    public function testLoggerHandlerPathSetProperly()
+    {
+        $handlerPaths = [
+            'handler.log',
+            '/path/to/handler.log',
+            '../../../relative/path/to/handler.log',
+            $this->getHandler()
+        ];
+        
+        foreach ($handlerPaths as $handlerPath) {
+            $provider = new LoggerProvider('logger_name', $handlerPath);
+            
+            $handlers = $provider->provide()->getHandlers();
+            
+            $this->assertEquals($handlerPath, $handlers[0]->getUrl());
+        }
+    }
+    
+    /**
+     * @param mixed $handler The provided handler.
+     * @expectedException Exception
+     * @expectedExceptionMessage The log handler path must be a string or resource!
+     * @dataProvider dataProviderInvalidHandler
+     */
+    public function testThrowsExceptionWhenHandlerIsInvalid($handler)
+    {
+        $name = 'logger_name';
+        
+        $provider = new LoggerProvider($name, $handler);
+        $provider->provide();
     }
     
     /**
      * @param mixed $name The provided name.
-     * @param boolean $expected The provided expected result.
-     * @dataProvider dataProviderIsValidName
-     */
-    public function testIsValidNameAcceptsOnlyValidValues($name, $expected)
-    {
-        $provider = Mockery::mock(LoggerProvider::class)->makePartial();
-        
-        $this->assertEquals($expected, $provider->isValidName($name));
-    }
-    
-    public function testProvideReturnLoggerInstanceWhenAllArgumentsAreValid()
-    {
-        $arguments = ['logger_name', 'logger_handler'];
-        
-        $provider = Mockery::mock(LoggerProvider::class, $arguments);
-        
-        $provider->shouldReceive('isValidName')->andReturn(true);
-        $provider->shouldReceive('isValidHandler')->andReturn(true);
-        $provider->shouldReceive('provide')->passthru();
-        
-        $logger = $provider->provide();
-        
-        $provider->shouldHaveReceived('isValidName')->once();
-        $provider->shouldHaveReceived('isValidHandler')->once();
-        
-        $this->assertInstanceOf(Logger::class, $logger);
-        $this->assertEquals($arguments[0], $logger->getName());
-    }
-    
-    public function testProvideReturnsStreamHandlerInstanceWhenAllArgumentsAreValid()
-    {
-        $arguments = ['logger_name', 'logger_handler'];
-        
-        $provider = Mockery::mock(LoggerProvider::class, $arguments);
-        
-        $provider->shouldReceive('isValidName')->andReturn(true);
-        $provider->shouldReceive('isValidHandler')->andReturn(true);
-        $provider->shouldReceive('provide')->passthru();
-        
-        $logger = $provider->provide();
-        $handlers = $logger->getHandlers();
-        
-        $provider->shouldHaveReceived('isValidName')->once();
-        $provider->shouldHaveReceived('isValidHandler')->once();
-        
-        $this->assertCount(1, $handlers);
-        $this->assertInstanceOf(StreamHandler::class, $handlers[0]);
-    }
-
-    /**
-     * @expectedException Exception
-     * @expectedExceptionMessage The log handler path must be a string or resource!
-     */
-    public function testProvideThrowsExceptionWhenHandlerIsInvalid()
-    {
-        $provider = Mockery::mock(LoggerProvider::class);
-        
-        $provider->shouldReceive('isValidName')->andReturn(true);
-        $provider->shouldReceive('isValidHandler')->andReturn(false);
-        $provider->shouldReceive('provide')->passthru();
-        
-        $provider->provide();
-    }
-    
-    /**
      * @expectedException Exception
      * @expectedExceptionMessage The logger name must be a string!
+     * @dataProvider dataProviderInvalidName
      */
-    public function testProvideThrowsExceptionWhenNameIsInvalid()
+    public function testThrowsExceptionWhenNameIsInvalid($name)
     {
-        $provider = Mockery::mock(LoggerProvider::class);
+        $handler = $this->getHandler();
         
-        $provider->shouldReceive('isValidName')->andReturn(false);
-        $provider->shouldReceive('isValidHandler')->andReturn(true);
-        $provider->shouldReceive('provide')->passthru();
-        
+        $provider = new LoggerProvider($name, $handler);
         $provider->provide();
     }
     
-    public function dataProviderIsValidHandler()
+    /**
+     * Returns the path of handler.
+     * 
+     * @return string
+     */
+    private function getHandler()
+    {
+        return $this->root->getChild('readable_and_writable')->getChild('app.log')->url();
+    }
+    
+    public function dataProviderInvalidHandler()
     {
         return [
-            ['', false],
-            ['abc', true],
-            ['012', true],
-            ['path/to/dir', true],
-            ['path/to/log.file', true],
-            ['../another/path/to/log.file', true],
-            [tmpfile(), true],
-            [false, false],
-            [0, false],
-            [1.5, false],
-            [[], false],
-            [new stdClass, false]
+            [''],
+            [false],
+            [0],
+            [1.5],
+            [[]],
+            [new stdClass]
         ];
     }
     
-    public function dataProviderIsValidName()
+    public function dataProviderInvalidName()
     {
         return [
-            ['', false],
-            ['     ', false],
-            ['.!?@#', false],
-            ['012345', false],
-            ['1.5', false],
-            [0, false],
-            [1.5, false],
-            [false, false],
-            [[], false],
-            [new stdClass, false],
-            ['logger_name', true],
-            ['loggerName', true],
-            ['a', false],
-            [str_repeat('a', 2), false],
-            [str_repeat('a', 3), true],
-            [str_repeat('a', 32), true],
-            [str_repeat('a', 33), false]
+            [''],
+            ['     '],
+            ['.!?@#'],
+            ['012345'],
+            ['1.5'],
+            [0],
+            [1.5],
+            [false],
+            [[]],
+            [new stdClass],
+            ['a'],
+            [str_repeat('a', 2)],
+            [str_repeat('a', 33)]
+        ];
+    }
+    
+    public function dataProviderValidNameAndHandler()
+    {
+        return [
+            ['logger_name', '/path/to/log.file'],
+            [str_repeat('a', 3), '../another/path/to/log.file'],
+            [str_repeat('a', 32), tmpfile()]
         ];
     }
 }

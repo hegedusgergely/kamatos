@@ -49,36 +49,14 @@ class LoggerProvider implements ProviderInterface
      */
     public function provide(ContainerInterface $container = null)
     {
-        if (!$this->isValidName($this->name)) {
+        if (!is_string($this->name) || !preg_match('/^[a-zA-Z_-]{3,32}$/', $this->name)) {
             throw new Exception('The logger name must be a string!');
         }
-        if (!$this->isValidHandler($this->handler)) {            
+        if (!is_resource($this->handler) && !(is_string($this->handler) && !empty($this->handler))) {
             throw new Exception('The log handler path must be a string or resource!');
         }
         $logger = new Logger($this->name);
         $logger->pushHandler(new StreamHandler($this->handler));
         return $logger;
-    }
-    
-    /**
-     * Validates the name of the logger.
-     * 
-     * @param string $name Name of the logger.
-     * @return boolean
-     */
-    public function isValidName($name)
-    {
-        return is_string($name) && preg_match('/^[a-zA-Z_-]{3,32}$/', $name);
-    }
-    
-    /**
-     * Validates the logger handler.
-     * 
-     * @param string|resource $handler The logger handler.
-     * @return boolean
-     */
-    public function isValidHandler($handler)
-    {
-        return is_resource($handler) || (is_string($handler) && !empty($handler));
     }
 }
