@@ -2,6 +2,7 @@ vendor
 public/assets
 public/bower_components
 public/node_modules
+config.php
 composer.lock
 .vagrant
 .DS_Store

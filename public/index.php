@@ -1,7 +1,7 @@
 <?php
-require '../vendor/autoload.php';
 
-$app = require '../src/app.php';
-require '../src/routes.php';
-// It's time to run the application.
+// Creating application.
+$app = require __DIR__ . '/../bootstrap/app.php';
+
+// Running application.
 $app->run();
