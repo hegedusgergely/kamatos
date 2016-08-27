@@ -1,99 +1,70 @@
 /*
- *  Importing Normalize and Skeleton CSS framework.
- */
- @import "normalize.css";
- @import "skeleton.css";
-
-
-/*
  * Variables
  */
 
 $background-color: lighten(#33C3F0, 20%);
 $header-text-color: #fff;
 
-
-*
-{
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
-}
-
-strong
-{
-    font-weight: bold;
-}
-
-body
-{
-    font-size: 1.7em;
+body {
     background-color: $background-color;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.7em;
+    font-weight: 300;
 
-    form
-    {
+    form {
         padding: 20px;
         background-color: #fff;
         border-radius: 4px;
     }
 
-    label
-    {
+    label {
         color: #505050;
     }
 
-    input
-    {
+    input {
         font-size: 1.5rem;
     }
 
-    input[type="submit"]
-    {
+    input[type="submit"] {
         font-size: 1.5rem;
         font-family: 'Rakkas', cursive;
         letter-spacing: .2rem;
     }
 
-    table
-    {
+    table {
         background-color: #fff;
         padding: 40px;
         border-radius: 4px;
-
-        th,td
-        {
+        th,
+        td {
             text-align: center;
             color: #505050;
         }
     }
 
-    p
-    {
+    p {
         text-align: center;
         color: #505050;
     }
 
-    header
-    {
+    header {
         padding: 100px 0 50px 0;
         color: $header-text-color;
         text-align: center;
 
-        h1,h3
-        {
+        h1,
+        h3 {
             font-family: 'Rakkas', cursive;
             letter-spacing: 1rem;
             text-transform: uppercase;
         }
-        h1
-        {
+        h1 {
             font-size: 7rem;
         }
-        h3
-        {
+        h3 {
             font-size: 3rem;
         }
-        p
-        {
+        p {
             font-size: 2rem;
         }
     }
