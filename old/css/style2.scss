@@ -1,0 +1,61 @@
+/*
+ *  Importing Normalize and Skeleton CSS framework.
+ */
+ @import 'normalize';
+ @import 'skeleton';
+
+
+/*
+ * Variables
+ */
+
+$background-color: lightgrey;
+
+strong
+{
+    font-weight: 700;
+}
+
+body
+{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.7em;
+    background-color: $background-color;
+
+    form
+    {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 4px;
+    }
+
+    label
+    {
+        color: #505050;
+    }
+
+    input
+    {
+        font-size: 1.5rem;
+    }
+
+    input[type="submit"]
+    {
+        font-size: 1.5rem;
+        font-family: 'Noto Serif', serif;
+        letter-spacing: .2rem;
+    }
+
+    table
+    {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 4px;
+
+        th,td
+        {
+            text-align: center;
+            color: #505050;
+        }
+    }
+}

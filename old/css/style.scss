@@ -1,0 +1,151 @@
+/*
+ *  Importing Normalize and Skeleton CSS framework.
+ */
+ @import 'normalize';
+ @import 'skeleton';
+
+/*
+ * Variables
+ */
+$background-color: lightblue;
+$white: hsl(0, 100%, 100%);
+$dark: hsl(0, 0%, 30%);
+
+
+body
+{
+    font-family: 'Noto Sans', sans-serif;
+    background-color: $background-color;
+    color: $dark;
+
+    strong {font-weight: 700;}
+
+    nav
+    {
+        text-align: center;
+        ul
+        {
+            list-style: none;
+            padding: 1em;
+            margin: 0;
+            li
+            {
+                display: inline-block;
+                margin: 0;
+                padding: 1em;
+
+                a
+                {
+                    color: $white;
+                    text-decoration: none;
+                }
+
+                a:hover
+                {
+                    color: $dark;
+                }
+            }
+        }
+    }
+
+    header
+    {
+        font-family: 'Noto Serif', serif;
+        text-align: center;
+        color: $white;
+        padding: 3vh ;
+
+        #headertext
+        {
+            h1,p
+            {
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                padding: 10px;
+                margin: 0;
+            }
+
+            #h1no2{display: none;}
+        }
+    }
+
+    section
+    {
+        label
+        {
+            font-weight: 400;
+        }
+
+        #form
+        {
+            border-radius: 5px;
+            background: white;
+            padding: 1em;
+
+            input[type="submit"]
+            {
+                background-color: darken($background-color, 20%);
+                font-family: 'Noto Sans', sans-serif;
+                letter-spacing: 0.3em;
+                margin: 1em 0 0 0;
+                font-weight: 700;
+                border: none;
+            }
+            input[type="submit"]:hover
+            {
+                background-color: darken($background-color, 40%);
+            }
+        }
+
+        table
+        {
+            background-color: $white;
+            border-radius: 5px;
+
+            th,td
+            {
+                text-align: center;
+                color: $dark;
+            }
+        }
+    }
+
+    @media print{
+        *{color: black;background: white;}
+
+        nav{display: none;}
+
+        .ten.columns{ width: 100%; margin-left: 0; }
+
+        header
+        {
+            #headertext
+            {
+                border: 1px black solid;
+                h1
+                {
+                    font-size: 2em;
+                }
+                #h1no1{display: none;}
+                #h1no2{display: block;}
+                p
+                {
+                    font-size: 1em;
+                }
+            }
+        }
+
+        section
+        {
+            #sum
+            {
+                #center{text-align: center;}
+                th,td
+                {
+                    text-align: left;
+                    color: black;
+                }
+            }
+        }
+    }
+}
